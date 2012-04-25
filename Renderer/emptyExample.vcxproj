@@ -57,6 +57,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxCv\libs\ofxCv\include;..\..\..\addons\ofxCv\libs\opencv\include;..\..\..\addons\ofxCameraTrack\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxRGBDepth\src;..\..\..\addons\ofxRange;..\..\..\addons\ofxCv\src;..\..\..\addons\ofxGameCamera\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -80,7 +81,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat />
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxCv\libs\ofxCv\include;..\..\..\addons\ofxCv\libs\opencv\include;..\..\..\addons\ofxCameraTrack\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxRGBDepth\src;..\..\..\addons\ofxRange;..\..\..\addons\ofxCv\src;..\..\..\addons\ofxGameCamera\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxOsc\src;..\..\..\addons\ofxOsc\libs\oscpack\include;..\..\..\addons\ofxCv\libs\ofxCv\include;..\..\..\addons\ofxCv\libs\opencv\include;..\..\..\addons\ofxCameraTrack\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxRGBDepth\src;..\..\..\addons\ofxRange;..\..\..\addons\ofxCv\src;..\..\..\addons\ofxGameCamera\src;..\..\..\addons\ofxOsc\libs\oscpack\include\osc;..\..\..\addons\ofxOsc\libs\oscpack\include\ip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -93,12 +94,19 @@
       <TargetMachine>MachineX86</TargetMachine>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <IgnoreSpecificDefaultLibraries>PocoFoundation.lib;PocoFoundationd.lib;atlthunk.lib;LIBC.lib;LIBCMT</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>..\..\..\addons\ofxOsc\libs\oscpack\lib\vs2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>oscpack.lib;cairo-static.lib;pixman-1.lib;msimg32.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;setupapi.lib;Vfw32.lib;comctl32.lib;glut32.lib;rtAudio.lib;videoInput.lib;libfreetype.lib;FreeImage.lib;qtmlClient.lib;dsound.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;glew32s.lib;fmodex_vc.lib;glu32.lib;PocoFoundationmd.lib;PocoNetmd.lib;PocoUtilmd.lib;PocoXMLmd.lib;Ws2_32.lib;tess2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\addons\ofxCameraTrack\src\ofxCameraTrack.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGameCamera\src\ofxGameCamera.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthHoleFiller.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageCompressor.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageSequence.cpp" />
     <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDCompositionManager.cpp" />
@@ -117,7 +125,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxCameraTrack\src\ofxCameraTrack.h" />
     <ClInclude Include="..\..\..\addons\ofxGameCamera\src\ofxGameCamera.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h" />
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h" />
     <ClInclude Include="..\..\..\addons\ofxRange\ofRange.h" />
+    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthHoleFiller.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageCompressor.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthImageSequence.h" />
     <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxRGBDCompositionManager.h" />
@@ -140,6 +155,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\addons\ofxGameCamera\.gitignore" />
+    <None Include="..\..\..\addons\ofxOsc\install.xml" />
+    <None Include="bin\data\shaders\unproject.frag" />
+    <None Include="bin\data\shaders\unproject.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

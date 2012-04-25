@@ -43,6 +43,21 @@
       <Filter>ofxCameraTrack</Filter>
     </ClCompile>
     <ClCompile Include="src\ScreenLabPortrait.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthHoleFiller.cpp">
+      <Filter>ofxRGBDepth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
+      <Filter>ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp">
+      <Filter>ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp">
+      <Filter>ofxOsc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
+      <Filter>ofxOsc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\testApp.h" />
@@ -83,6 +98,27 @@
       <Filter>ofxCameraTrack</Filter>
     </ClInclude>
     <ClInclude Include="src\ScreenLabPortrait.h" />
+    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthHoleFiller.h">
+      <Filter>ofxRGBDepth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h">
+      <Filter>ofxOsc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ofxGameCamera">
@@ -103,10 +139,18 @@
     <Filter Include="ofxCameraTrack">
       <UniqueIdentifier>{b56d26b8-f747-4dc6-9851-cbd43d90c0d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ofxOsc">
+      <UniqueIdentifier>{9e2d70d8-e508-4550-9470-6a44c67ba7e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\addons\ofxGameCamera\.gitignore">
       <Filter>ofxGameCamera</Filter>
+    </None>
+    <None Include="bin\data\shaders\unproject.frag" />
+    <None Include="bin\data\shaders\unproject.vert" />
+    <None Include="..\..\..\addons\ofxOsc\install.xml">
+      <Filter>ofxOsc</Filter>
     </None>
   </ItemGroup>
 </Project>

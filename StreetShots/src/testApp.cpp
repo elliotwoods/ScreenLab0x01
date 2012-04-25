@@ -7,14 +7,17 @@ void testApp::setup(){
 	cam.setFarClip(10000.0f);
     ofSetFrameRate(60);
     ofBackground(0);
-       
+    ofHideCursor();
 	ofToggleFullscreen();
 	//scrubMode = true;
 	scrubMode = false;
 	//debugView = true;
 	debugView = false;
 
-	rx.setup(1200);
+	filler.setIterations(2);
+	filler.setKernelSize(1);
+
+	rx.setup(1400);
     if(!playlist.loadFile("playlist.xml")){
         ofLogError("Error loading playlist xml");
     }
@@ -29,22 +32,36 @@ void testApp::setup(){
         take.images.loadSequence( take.path );        
         take.intime  = playlist.getValue("intime", 0);
 		take.outtime = playlist.getValue("outtime", int(take.images.getDurationInMillis()));
+		take.name = playlist.getValue("name", "noname");
 		//take.outtime = take.images.getDurationInMillis();
 		cout << take.intime << " " << take.outtime << " " << take.images.getDurationInMillis() << endl;
-        take.soundFile = playlist.getValue("soundFile", "");
+        take.durationInSeconds = playlist.getValue("duration", 10);
 
         playlist.popTag();
         sequences.push_back(take);
+
+		//TEMP PLEASE REMOVE
+//		if(i == 1) break;
     }
     currentTake = 0;
+	string host1 = playlist.getValue("ip1", "localhost");
+	string host2 = playlist.getValue("ip2", "localhost");
+	int port = playlist.getValue("port", 1200);
+	cout << "setting up ip " << host1 << " " << host2 << " port " << port << endl;
+	sendera.setup(host1, port);
+	senderb.setup(host2, port);
+	
 
-    startTime = ofGetElapsedTimeMillis();
+	startTime = ofGetElapsedTimeMillis();
 }
 
 //--------------------------------------------------------------
 
 void loadMatrix(ofxOscMessage & msg, ofMatrix4x4 & matrix)
 {
+	if (msg.getNumArgs() != 16)
+		return;
+
 	for(int i = 0; i < 16; i++){
 		matrix.getPtr()[i] = msg.getArgAsFloat(i);
 	}
@@ -80,13 +97,22 @@ void testApp::draw(){
         ofDrawBitmapString("Current Path " + sequences[currentTake].path, 50, 50);
     }
     else{
-		long currentMillis = ofGetElapsedTimeMillis() - startTime + sequences[currentTake].intime;
+		long duration = (sequences[currentTake].outtime - sequences[currentTake].intime);
+		long currentMillis = (ofGetElapsedTimeMillis() - startTime);
+		long pointInTrack = currentMillis % sequences[currentTake].images.getDurationInMillis();
+		//cout << "duration is " << duration << " current millis " << currentMillis << " point in track " << pointInTrack << endl;
+		if(currentMillis/1000.0 > sequences[currentTake].durationInSeconds){
+            nextTake();			
+		}
+		else{
+			sequences[currentTake].images.selectTime(pointInTrack);    		
+		}
+		
 		//cout << "start time " << startTime << " millis " << currentMillis << " " << sequences[currentTake].images.getDurationInMillis() << endl;
         if(currentMillis < sequences[currentTake].outtime){
-	        sequences[currentTake].images.selectTime(currentMillis);    
-        }
+			
+		}
         else {
-            nextTake();
         }
     }
 }
@@ -94,13 +120,29 @@ void testApp::draw(){
 void testApp::drawPointcloud(){
 
     ofShortPixels& pix = sequences[currentTake].images.getPixels();
-    
+    filler.close(pix);
+
 	glEnable(GL_DEPTH_TEST);
 	ofMesh mesh;
+
 	ofRectangle rect = ofRectangle(0,0, ofGetWidth(), ofGetHeight());
-    //glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_POINT_SMOOTH);
     //glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
-    glPointSize(2);
+    glPointSize(1.5);
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	int lightPlane = 3000;
+	if(sequences[currentTake].name == "jenny"){
+		lightPlane = 1600;
+	}
+	else if(sequences[currentTake].name == "alice"){
+		lightPlane = 2700;
+	}
+	else if(sequences[currentTake].name == "alasdair"){
+		lightPlane = 2700;
+	}
+	else if(sequences[currentTake].name == "lisa"){
+		lightPlane = 3200;
+	}
 
 	for(int y = 0; y < 480; y++){
 		for(int x = 0; x < 640; x++){
@@ -112,6 +154,9 @@ void testApp::drawPointcloud(){
 			double wx = (double)(x - 640/2) * factor;
 			double wy = (double)(y - 480/2) * factor;
             mesh.addVertex(ofVec3f(wx,-wy,-wz));
+			float color = ofMap(abs(wz-lightPlane), 0, 1500, 1.0, .0, true);
+			color *= color;
+			mesh.addColor(ofFloatColor(color,color,color,1.0));
 		}
 	}
     
@@ -199,12 +244,27 @@ void testApp::keyPressed(int key){
     if(key == 'f'){
 		ofToggleFullscreen();  
     }
+
+	if(key == 'N'){
+		nextTake();
+	}
 }
 
 void testApp::nextTake(){
     currentTake = (currentTake + 1) % sequences.size();   
-	cout << currentTake << " switched  " << endl;
+	cout << currentTake << " /  " << sequences.size() << endl;
 	startTime = ofGetElapsedTimeMillis();
+	ofxOscMessage m1;
+	m1.setAddress("/person");
+	m1.addStringArg(sequences[currentTake].name);
+
+	ofxOscMessage m2;
+	m2.setAddress("/person");
+	m2.addStringArg(sequences[currentTake].name);
+	cout << "sending " << sequences[currentTake].name << endl;
+	sendera.sendMessage(m1);
+	senderb.sendMessage(m2);
+
 }
 
 void testApp::previousTake(){

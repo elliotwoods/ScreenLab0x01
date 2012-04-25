@@ -23,7 +23,8 @@ void testApp::setup(){
         leftRect.width = localSettings.getValue("w",10);
         leftRect.height = localSettings.getValue("h",10);
         localSettings.popTag();
-        cout << "screen one " << rightRect.x << " " << rightRect.y << " " << leftRect.width << " " << leftRect.height << endl;
+        cout << "screen one " << leftRect.x << " " << leftRect.y << " " << leftRect.width << " " << leftRect.height << endl;
+		fbo.allocate(leftRect.width, leftRect.height, GL_RGBA, 4);
 		if(twoScreens){
             localSettings.pushTag("screenRect",1);
             rightRect.x = localSettings.getValue("x",0);
@@ -51,13 +52,15 @@ void testApp::setup(){
         cout << "line width " << lineWidth << " " << pointSize << endl;
         ofLogNotice("TYPE IS " + typeString);
     	int receiverPort = localSettings.getValue("receiverPort", 1200);
-        receiver.setup(1200);
+		cout << "loading port " << receiverPort << endl;
+        receiver.setup(receiverPort);
     }
     else{
         ofLogError("testApp -- error loading settings -- check xml file");
 		return;
     }
-    
+    showcoords = false;
+
     ofxXmlSettings portraits;
     if(portraits.loadFile("portraits.xml")){
         portraits.pushTag("portraits");
@@ -122,18 +125,23 @@ void testApp::setup(){
     leftCam.autosavePosition = true;
     leftCam.speed = 10;
     leftCam.loadCameraPosition();
+	leftCam.setScale(1, -1, 1);
 
     rightCam.setup();
     rightCam.usemouse = true;
     rightCam.autosavePosition = true;
     rightCam.speed = 10;
     rightCam.loadCameraPosition();
+	rightCam.setScale(1, -1, 1);
 
+	normalLeftCam.setScale(1, -1, 1);
+	normalRightCam.setScale(1, -1, 1);
 	checkSwitchCamera(true);
     
     glEnable(GL_DEPTH_TEST);
     loadedSuccess = true;
 	ofToggleFullscreen();
+	ofHideCursor();
 //    lastCameraChangeTimeRight = ofGetElapsedTimef();
 //    currentCameraDurationRight = ofRandom(20, 50); //ofRandom(10, 40);
 //    lastCameraChangeTimeLeft = ofGetElapsedTimef();
@@ -161,10 +169,15 @@ void testApp::gotoPortrait(string name){
 	for(int i = 0; i < allPortraits.size(); i++){
     	if(allPortraits[i].name == name){
             if(currentPortrait != -1){
-                allPortraits[i].stop();
+                allPortraits[currentPortrait].stop();
             }
             currentPortrait = i;
             allPortraits[i].resetAndPlay();
+
+			cameraTrackFile = ofToDataPath(allPortraits[currentPortrait].take.mediaFolder + "/SalfordTracks.xml");
+			cout << "loading camera track " << cameraTrackFile << endl;
+			track.loadFromFile(cameraTrackFile);
+
             return;
         }
     }
@@ -174,12 +187,12 @@ void testApp::gotoPortrait(string name){
 //--------------------------------------------------------------
 void testApp::update(){
 	if(!loadedSuccess) return;
-   // cout << allPortraits[currentPortrait].soundPlayer.getPosition() << endl;
+    //cout << allPortraits[currentPortrait].soundPlayer.getPosition() << endl;
     
     while(receiver.hasWaitingMessages()){
         ofxOscMessage m;
         receiver.getNextMessage(&m);
-        
+        cout << "received message " << m.getAddress() << endl;
         if(m.getAddress() == "/person"){
             gotoPortrait(m.getArgAsString(0));
         }
@@ -213,7 +226,7 @@ void testApp::update(){
     	//do master stuff
     }
     
-    //checkSwitchCamera();
+    checkSwitchCamera();
 }
 
 //--------------------------------------------------------------
@@ -228,30 +241,60 @@ void testApp::draw(){
     ofPopStyle();
     
     if(composeMode){
-        leftCam.begin(leftRect);
+		fbo.begin();
+		ofClear(0,0,0,0);
+        leftCam.begin(ofRectangle(0,0,leftRect.width,leftRect.height));
         drawFunc();
         leftCam.end();
-        
-        rightCam.begin(rightRect);
-        drawFunc();
-        rightCam.end();
+        fbo.end();
+		fbo.getTextureReference().draw(leftRect);
+
+		if(twoScreens){
+			fbo.begin();
+			ofClear(0,0,0,0);
+
+			rightCam.begin(ofRectangle(0,0,leftRect.width,leftRect.height));
+			drawFunc();
+			rightCam.end();
+			fbo.end();
+			fbo.getTextureReference().draw(rightRect);
+		}
     }
     else{
-        normalLeftCam.begin(leftRect);
+		
+		fbo.begin();
+		ofClear(0,0,0,0);
+
+        normalLeftCam.begin(ofRectangle(0,0,leftRect.width,leftRect.height));
 		drawFunc();
         normalLeftCam.end();
+		fbo.end();
+		fbo.getTextureReference().draw(leftRect);
+
      	if(twoScreens){   
-            normalRightCam.begin(rightRect);
+			fbo.begin();
+			ofClear(0,0,0,0);
+            normalRightCam.begin(ofRectangle(0,0,leftRect.width,leftRect.height));
             drawFunc();
-            normalRightCam.end();        
+            normalRightCam.end();
+			fbo.end();
+			fbo.getTextureReference().draw(rightRect);
         }
     }
     
+	glDisable(GL_DEPTH_TEST);
+	if(showcoords){
+		ofSetColor(255);
+		ofDrawBitmapString("X: " + ofToString(mouseX) + " Y: " + ofToString(mouseY), mouseX+20, mouseY+25);
+	}
+	glEnable(GL_DEPTH_TEST);
+
 //	ofDrawBitmapString("of framerate " + ofToString(ofGetFrameRate()), 30, 30 );
 	//allPortraits[currentPortrait].videoPlayer.draw(0,0, 640,360);
 }
 
 void testApp::drawFunc(){
+	ofPushMatrix();
     ofEnableBlendMode(OF_BLENDMODE_SCREEN);
     glEnable(GL_POINT_SMOOTH); // makes circular points
     //glEnable(GL_VERTEX_PROGRAM_POINT_SIZE_ARB);	// allows per-point size
@@ -260,6 +303,8 @@ void testApp::drawFunc(){
     renderer.drawPointCloud();
     glLineWidth( int(lineWidth) );
     renderer.drawWireFrame();
+
+	ofPopMatrix();
 }
 
 //--------------------------------------------------------------
@@ -299,6 +344,11 @@ void testApp::keyPressed(int key){
 
 	if(key == 'f'){
 		ofToggleFullscreen();
+	}
+	
+	if(key == 'M'){
+		ofShowCursor();
+		showcoords = true;
 	}
 }
 

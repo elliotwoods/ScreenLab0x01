@@ -72,6 +72,11 @@ void ScreenLabPortrait::resetAndPlay(){
     	take.getRenderSettings()[0].applyToRenderer(*rendererRef);
     }
     rendererRef->setSimplification(2);
+	rendererRef->farClip = 1500;
+	rendererRef->edgeCull = 800;
+	if(name == "jenny"){
+		rendererRef->farClip = 900;
+	}
 	ofAddListener(ofEvents().update, this, &ScreenLabPortrait::update);
 }
 
@@ -82,7 +87,8 @@ void ScreenLabPortrait::stop(){
 }
 
 void ScreenLabPortrait::update(ofEventArgs& args){
-    if(soundPlayer.getPosition() == 1.0 || lastTime > soundPlayer.getPosition()){ //looops?
+    soundPlayer.update();
+	if(soundPlayer.getPosition() == 1.0 || lastTime > soundPlayer.getPosition()){ //looops?
         stop();
     }
     lastTime = soundPlayer.getPosition();

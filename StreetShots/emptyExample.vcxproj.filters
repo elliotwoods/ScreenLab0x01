@@ -36,6 +36,9 @@
     <ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
       <Filter>ofxOsc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthHoleFiller.cpp">
+      <Filter>RGBD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\testApp.h" />
@@ -71,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h">
       <Filter>ofxOsc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxRGBDepth\src\ofxDepthHoleFiller.h">
+      <Filter>RGBD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

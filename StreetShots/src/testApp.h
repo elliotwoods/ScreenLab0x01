@@ -5,6 +5,7 @@
 #include "ofxGrabCam.h"
 #include "ofxXmlSettings.h"
 #include "ofxOsc.h"
+#include "ofxDepthHoleFiller.h"
 
 typedef struct {
 	ofxDepthImageSequence images;
@@ -13,6 +14,8 @@ typedef struct {
     string soundFile;
     int xmlIndex;
     string path;
+	string name;
+	float durationInSeconds;
 } StreetTake;
 
 class testApp : public ofBaseApp{
@@ -45,8 +48,11 @@ class testApp : public ofBaseApp{
     long startTime;
 
 	ofxOscReceiver rx;	
+	ofxOscSender sendera;
+	ofxOscSender senderb;
 	ofMatrix4x4 view;
 	ofMatrix4x4 projection;
+	ofxDepthHoleFiller filler;
 
     ofxGrabCam cam;
 

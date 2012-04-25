@@ -41,7 +41,8 @@ class testApp : public ofBaseApp{
     string soundDirectory;
     string portraitMediaBin;
     string cameraTrackFile;
-    
+    bool showcoords;
+
     PortraitType type;
     
     ofxGameCamera leftCam;
@@ -66,5 +67,5 @@ class testApp : public ofBaseApp{
   	void checkSwitchCamera(bool force = false);
 
     ofxOscReceiver receiver;
-
+	ofFbo fbo;
 };

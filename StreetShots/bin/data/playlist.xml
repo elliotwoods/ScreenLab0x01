@@ -1,43 +1,55 @@
 <takesfolder>E:\Media\jim_studio_shots</takesfolder>
 <take>
     <folder>11_07_12_matt_far_depth</folder>
+    <name>matt</name>
     <intime>1976</intime>
     <outtime>48842</outtime>
-    <soundfile />
+    <duration>142</duration>
 </take>
 <take>
     <folder>12_00_39_lisa_far_depth</folder>
+    <name>lisa</name>
     <intime>9298</intime>
     <outtime>44556</outtime>
-    <soundfile />
+    <duration>91</duration>
 </take>
 <take>
     <folder>12_24_51_alice_far_depth</folder>
+    <name>alice</name>
     <intime>2205</intime>
     <outtime>33630</outtime>
-    <soundfile />
+    <duration>172</duration>
 </take>
 <take>
     <folder>15_13_01_alasdair_far_depth</folder>
+    <name>alasdair</name>
     <intime>2063</intime>
     <outtime>38406</outtime>
-    <soundfile />
+    <duration>194</duration>
 </take>
 <take>
     <folder>14_34_06_mark_far_depth</folder>
-    <soundfile />
+    <name>mark</name>
     <intime>4461</intime>
     <outtime>37620</outtime>
+    <duration>153</duration>
 </take>
 <take>
     <folder>15_47_13_jen_far_depth</folder>
+    <name>jenny</name>
     <soundfile />
     <intime>3678</intime>
     <outtime>55958</outtime>
+    <duration>140</duration>
 </take>
 <take>
     <folder>13_14_12_kev_far_depth</folder>
-    <soundfile />
+    <name>kev</name>
     <intime>2248</intime>
     <outtime>43318</outtime>
+    <duration>135</duration>
 </take>
+
+<ip1>localhost</ip1>
+<ip2>localhost</ip2>
+<port>1200</port>

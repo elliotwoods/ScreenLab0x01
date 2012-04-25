@@ -1,10 +1,10 @@
 <settings>
 	<soundDirectory>
-		e:\Media\SoundExports\
+		e:\\Media\\SoundExports\\
 	</soundDirectory>
 	<portraitMediaBin>
-		e:\Media\MediaBinForShow\
-	</soundDirectory>
+		e:\\Media\\MediaBinForShow\\
+	</portraitMediaBin>
 	<screenType>
 		CLOSE
 	</screenType>
@@ -22,12 +22,7 @@
 		<h>2160</h>		
 	</screenRect>	
 	
-	<pointSize>
-		2.5
-	</pointSize>
-	
-	<lineWidth>
-		1
-	</lineWidth>
+	<pointSize>2.5</pointSize>
+	<lineWidth>1</lineWidth>
 	
 </settings>
